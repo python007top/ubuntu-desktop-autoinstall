@@ -1,12 +1,45 @@
 autoinstall:
   version: 1
+  # 早期命令（一般不用）
+  # Replace the current autoinstall configuration with one provided by a trusted server
+  # early-commands:
+  #   - wget -O /autoinstall.yaml $TRUSTED_SERVER_U
+  # 定义鉴权部分
   identity:
     hostname: ubuntu-desktop
     username: local-optimum
-    password: "$6$ZE4WV3QRJhPUnsNv$BpkTBYjUOxOiWV5sNPYDSitTwxW.3NHLmhRqptzpa8a4KTxGpkvMaSDbyq4PVri9kdpD1t7ldUBgwB6uveObg."
+    password: "123"
+  # 交互定义网络部分
+  interactive-sections:
+    - network
+  # 定义存储
   storage:
     layout:
       name: lvm
+  # 区域设置
+  locale: "zh_CN.UTF-8"
+  # 更新默认程序，默认关闭
+  refresh-installer:
+    update: false
+    channel: latest/edge
+  # 键盘
+  keyboard:
+    layout: us
+    variant: ""
+    toggle: null
+  # 设置来源
+  source:
+    search_drivers: true
+    id: <the installation source marked as default in install-sources.yaml>
+  # apt源设置
+  apt:
+    mirror-selection:
+      primary:
+        - uri: "https://mirrors.tuna.tsinghua.edu.cn/ubuntu/"
+  fallback: offline-install
+  # 时区设置
+  timezone: "Asia/Shanghai"
+  # 要安装的 snap 包列表
   snaps:
     - name: spotify
       classic: false
@@ -16,8 +49,10 @@ autoinstall:
       classic: true
     - name: code
       classic: true
+  # 待安装的包列表
   packages:
     - vim
+  # 后期命令
   late-commands:
     - curtin in-target -- wget https://repo2.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.3-3_all.deb
     - curtin in-target -- dpkg -i ./protonvpn-stable-release_1.0.3-3_all.deb
